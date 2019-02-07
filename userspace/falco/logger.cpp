@@ -106,9 +106,9 @@ void falco_logger::log(int priority, const string msg) {
 
 	if (falco_logger::log_stderr) {
 		std::time_t result = std::time(nullptr);
-		string tstr = std::asctime(std::localtime(&result));
-		tstr = tstr.substr(0, 24);// remove trailling newline
-		fprintf(stderr, "%s: %s", tstr.c_str(), msg.c_str());
+		char buf[sizeof "YYYY-MM-DDTHH:MM:SS-0000"];
+		strftime(buf, sizeof(buf), "%FT%T%z", std::localtime(&result));
+		fprintf(stderr, "%s: %s", buf, msg.c_str());
 	}
 }
 
